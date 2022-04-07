@@ -1,5 +1,5 @@
 {
-  "name": "mood",
+  "name": "mod",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -33,13 +33,15 @@
     "jest": "^27.5.1",
     "prettier": "^2.6.2",
     "rollup": "^2.70.1",
+    "rollup-plugin-terser": "^7.0.2",
     "tslib": "^2.3.1",
     "typescript": "^4.6.3"
   },
   "output": {
-    "cjs": "dist/moodJs.cjs.js",
-    "umd": "dist/moodJs.umd.js",
-    "esm": "dist/moodJs.esm.js"
+    "cjs": "dist/modJs.cjs.js",
+    "umd": "dist/modJs.umd.js",
+    "esm": "dist/modJs.esm.js",
+    "iife": "dist/modJs.iife.js"
   },
   "config": {
     "commitizen": {
