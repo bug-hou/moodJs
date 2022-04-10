@@ -4,8 +4,14 @@ export type DateMethod =
   | "hours"
   | "minutes"
   | "seconds"
+  | "time"
   | "milliseconds"
-  | "fullYear";
+  | "week"
+  | "fullYear"
+  | "dateInMonth"
+  | "dateInYear"
+  | "dateToMonth"
+  | "dateToYear";
 
 export interface DateOptions {
   year?: number;

@@ -1,28 +1,37 @@
 import {
   capitalize,
+  formatRules,
   isDate,
   isNumber,
+  isObject,
   isString,
+  isUndefined,
+  mergeWith,
   numberPadStart,
   numberSlice,
   toString
 } from "../utils";
+import { dayInMonth, dayInYear, dayToMonth, dayToYear } from "../plugins";
 import { DateMethod, DateOptions, ModJsOptions } from "./type";
+import { DateToDate, NowToDate, numberToDate } from "./date";
 
 export class ModJs {
   private $Date: Date;
   private $year!: number;
   private $month!: number;
   private $date!: number;
-  private $day!: number;
+  private $week!: number;
   private $hours!: number;
   private $minutes!: number;
   private $seconds!: number;
   private $milliseconds!: number;
   private $time!: number;
+  static $m: ModJs;
   constructor();
   constructor(dateString: string);
   constructor(date: Date);
+  constructor(timmer: number);
+  constructor(options: DateOptions);
   constructor(
     year: number,
     monthIndex: number,
@@ -33,7 +42,7 @@ export class ModJs {
     milliseconds?: number
   );
   constructor(
-    year?: number | Date | string,
+    option?: number | Date | string | DateOptions,
     monthIndex?: number,
     day?: number,
     hours?: number,
@@ -46,52 +55,88 @@ export class ModJs {
       对 RFC 2822 格式的日期仅有约定俗成的支持。
       对 ISO 8601 格式的支持中，仅有日期的串 (例如 "1970-01-01") 会被处理为 UTC 而不是本地时间，与其他格式的串的处理不同。
       */
-    if (isString(year)) {
-      const timeStamp = Date.parse(year);
+    if (isUndefined(option)) {
+      this.$Date = NowToDate();
+    } else if (isString(option)) {
+      const timeStamp = this.parse(option);
       // 判断转化是否出错
       if (isNumber(timeStamp)) {
-        this.$Date = new Date(timeStamp);
+        this.$Date = numberToDate(timeStamp);
       } else {
         throw new TypeError("当前格式不能转化为日期格式");
       }
-    } else if (isDate(year)) {
+    } else if (isDate(option)) {
       // 判断如果为date类型直接转化
-      this.$Date = new Date(year);
-    } else if (isNumber(year)) {
-      // 全是数字类型
-      this.$Date = new Date(
-        year,
-        monthIndex ?? 0,
-        day ?? 0,
-        hours ?? 0,
-        minutes ?? 0,
-        seconds ?? 0,
-        milliseconds ?? 0
-      );
+      this.$Date = DateToDate(option);
     } else {
-      // 没有参数时
-      this.$Date = new Date();
+      if (isObject(option)) {
+        let { year, month, date, hours, minutes, seconds, milliseconds } =
+          option as DateOptions;
+        this.$Date = numberToDate(
+          year ?? 1970,
+          month,
+          date,
+          hours,
+          minutes,
+          seconds,
+          milliseconds
+        );
+      } else {
+        this.$Date = numberToDate(
+          option,
+          monthIndex,
+          day,
+          hours,
+          minutes,
+          seconds,
+          milliseconds
+        );
+      }
     }
     this.init();
+    // ModJs.$m = this.create();
   }
   private init() {
     const { $Date: D } = this;
     this.$year = D.getFullYear();
     this.$month = D.getMonth() + 1;
     this.$date = D.getDate();
-    this.$day = D.getDay();
+    this.$week = D.getDay();
     this.$hours = D.getHours();
     this.$minutes = D.getMinutes();
     this.$seconds = D.getSeconds();
     this.$milliseconds = D.getMilliseconds();
     this.$time = D.getTime();
   }
+  create(options: DateOptions = {}) {
+    const [year, month, date, hours, minutes, seconds, milliseconds] = this.get(
+      [
+        "fullYear",
+        "month",
+        "date",
+        "hours",
+        "minutes",
+        "seconds",
+        "milliseconds"
+      ]
+    );
+    const defaultOption = {
+      year,
+      month,
+      date,
+      hours,
+      minutes,
+      seconds,
+      milliseconds
+    };
+    return new ModJs(mergeWith(options, defaultOption));
+  }
   format(str: string) {
     const {
       $year,
       $month,
       $date,
-      $day,
+      $week,
       $hours,
       $minutes,
       $seconds,
@@ -106,31 +151,39 @@ export class ModJs {
       MM: numberPadStart($month, 2, "0"),
       D: toString($date),
       DD: numberPadStart($date, 2, "0"),
-      d: toString($day),
+      w: toString($week),
       H: toString($hours),
       HH: numberPadStart($hours, 2, "0"),
       h: numberPadStart($hours % 12 || 12, 1, "0"),
-      hh: numberPadStart($hours, 2, "0"),
+      hh: numberPadStart($hours % 12 || 12, 2, "0"),
       m: toString($minutes),
       mm: numberPadStart($minutes, 2, "0"),
       s: toString($seconds),
       ss: numberPadStart($seconds, 2, "0"),
       S: toString($milliseconds),
-      SSS: numberPadStart($milliseconds, 3, "0")
+      SSS: numberPadStart($milliseconds, 3, "0"),
+      t: toString($time)
     };
-    return str.replace(
-      /\[([^\]]+)]|Y{1,4}|M{1,2}|D{1,2}|d{1,2}|H{1,2}|h{1,2}|m{1,2}|s{1,2}|w{1}/g,
-      (match) => matches[match]
-    );
+    return str.replace(formatRules, (match, str) => str || matches[match]);
   }
-  set(options: DateOptions) {
+  set(options: DateOptions): ModJs;
+  set(name: DateMethod, val: number): ModJs;
+  set(options: DateOptions | DateMethod, val?: number) {
+    if (isString(options)) {
+      options = { [options]: val };
+    }
     for (const key in options) {
       this.processDate(key as any, options[key], false);
     }
     this.init();
     return this;
   }
-  get(options: ModJsOptions) {
+  get(name: DateMethod): number;
+  get(options: ModJsOptions): number[];
+  get(options: ModJsOptions | DateMethod) {
+    if (isString(options)) {
+      return this[options]();
+    }
     const result: any[] = [];
     options.forEach((item) => {
       if (item === "fullYear") {
@@ -176,9 +229,36 @@ export class ModJs {
   milliseconds(val?: number) {
     return this.processDate("milliseconds", val);
   }
-  day() {
-    return this.$day;
+  time(): number;
+  time(val: number): ModJs;
+  time(val?: number) {
+    return this.processDate("time", val);
   }
+  isBefore(m: ModJs) {
+    return !!(this.time() > m.time());
+  }
+  isAfter(m: ModJs) {
+    return !!(this.time() < m.time());
+  }
+  week() {
+    return this.$week;
+  }
+  dayInMonth() {
+    return dayInMonth(this);
+  }
+  dayInYear() {
+    return dayInYear(this);
+  }
+  dayToMonth() {
+    return dayToMonth(this);
+  }
+  dayToYear() {
+    return dayToYear(this);
+  }
+  modJs() {
+    return ModJs.$m;
+  }
+  parse = Date.parse;
   private processDate(
     name: DateMethod,
     val?: number,
@@ -186,7 +266,12 @@ export class ModJs {
   ): ModJs | number {
     let capName = capitalize(name);
     if (val) {
+      if (name === "month") {
+        // 因为在init时，month会+1
+        val -= 1;
+      }
       this.$Date["set" + capName](val);
+      // 可以阻止刷新
       if (isRefresh) {
         this.init();
       }

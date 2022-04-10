@@ -10,28 +10,28 @@ module.exports = () => {
     output: [
       {
         format: "cjs",
-        file: pkg.output.cjs,
+        file: pkg.output.cjs
         // sourcemap: true
       },
       {
         format: "es",
-        file: pkg.output.esm,
+        file: pkg.output.esm
         // sourcemap: true
       },
       {
         format: "iife",
         name: "moodJs",
-        file: pkg.output.iife,
+        file: pkg.output.iife
         // sourcemap: true
       },
       {
         format: "umd",
         name: "moodJs",
-        file: pkg.output.umd,
+        file: pkg.output.umd
         // sourcemap: true
       }
     ],
     plugins: [resolve(), typescript(), babel()]
     // plugins: [resolve(), typescript(), babel(), terser()]
-  }
+  };
 };
