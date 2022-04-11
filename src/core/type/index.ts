@@ -24,3 +24,9 @@ export interface DateOptions {
 }
 
 export type ModJsOptions = DateMethod[];
+
+export type ModJsLanguage = "en" | "zn"
+
+export interface languageModule {
+  months: string[]
+}

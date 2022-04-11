@@ -12,8 +12,9 @@ import {
   toString
 } from "../utils";
 import { dayInMonth, dayInYear, dayToMonth, dayToYear } from "../plugins";
-import { DateMethod, DateOptions, ModJsOptions } from "./type";
+import { DateMethod, DateOptions, languageModule, ModJsLanguage, ModJsOptions } from "./type";
 import { DateToDate, NowToDate, numberToDate } from "./date";
+import language from "../assets/language"
 
 export class ModJs {
   private $Date: Date;
@@ -26,7 +27,8 @@ export class ModJs {
   private $seconds!: number;
   private $milliseconds!: number;
   private $time!: number;
-  static $m: ModJs;
+  private language: ModJsLanguage = "en"
+  private $local: languageModule
   constructor();
   constructor(dateString: string);
   constructor(date: Date);
@@ -93,8 +95,9 @@ export class ModJs {
         );
       }
     }
+    this.$local = language[this.language];
     this.init();
-    // ModJs.$m = this.create();
+    // this.indicator = this.create();
   }
   private init() {
     const { $Date: D } = this;
@@ -141,7 +144,8 @@ export class ModJs {
       $minutes,
       $seconds,
       $milliseconds,
-      $time
+      $time,
+      $local
     } = this;
     const matches = {
       YY: numberSlice($year, -2),
@@ -149,6 +153,8 @@ export class ModJs {
       YYYY: toString($year),
       M: toString($month + 1),
       MM: numberPadStart($month, 2, "0"),
+      MMM: numberSlice($local["months"][$month - 1], 0, 3),
+      MMMM: $local['months'][$month - 1],
       D: toString($date),
       DD: numberPadStart($date, 2, "0"),
       w: toString($week),
@@ -255,9 +261,6 @@ export class ModJs {
   dayToYear() {
     return dayToYear(this);
   }
-  modJs() {
-    return ModJs.$m;
-  }
   parse = Date.parse;
   private processDate(
     name: DateMethod,
@@ -283,3 +286,4 @@ export class ModJs {
     return this["$" + name];
   }
 }
+

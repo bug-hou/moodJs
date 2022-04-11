@@ -31,7 +31,7 @@ module.exports = () => {
         // sourcemap: true
       }
     ],
-    plugins: [resolve(), typescript(), babel()]
-    // plugins: [resolve(), typescript(), babel(), terser()]
+    // plugins: [resolve(), typescript(), babel()]
+    plugins: [resolve(), typescript(), babel(), terser()]
   };
 };
