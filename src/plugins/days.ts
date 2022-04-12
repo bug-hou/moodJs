@@ -30,3 +30,12 @@ export function dayToYear(ModJs: ModJs) {
   }
   return result + date;
 }
+
+type Constructor<T> = new (...args: any[]) => T;
+export function days(M: Constructor<ModJs>, options) {
+  const props = M.prototype;
+  props.dayInMonth = dayInMonth;
+  props.dayInYear = dayInYear;
+  props.dayToMonth = dayToMonth;
+  props.dayToYear = dayToYear;
+}

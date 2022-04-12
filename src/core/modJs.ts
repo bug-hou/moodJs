@@ -11,7 +11,6 @@ import {
   numberSlice,
   toString
 } from "../utils";
-import { dayInMonth, dayInYear, dayToMonth, dayToYear } from "../plugins";
 import { DateMethod, DateOptions, languageModule, ModJsLanguage, ModJsOptions } from "./type";
 import { DateToDate, NowToDate, numberToDate } from "./date";
 import language from "../assets/language"
@@ -134,7 +133,7 @@ export class ModJs {
     };
     return new ModJs(mergeWith(options, defaultOption));
   }
-  format(str: string) {
+  format(str: string = "YYYY-MM-DD HH-mm-ss") {
     const {
       $year,
       $month,
@@ -249,18 +248,6 @@ export class ModJs {
   week() {
     return this.$week;
   }
-  dayInMonth() {
-    return dayInMonth(this);
-  }
-  dayInYear() {
-    return dayInYear(this);
-  }
-  dayToMonth() {
-    return dayToMonth(this);
-  }
-  dayToYear() {
-    return dayToYear(this);
-  }
   parse = Date.parse;
   private processDate(
     name: DateMethod,
@@ -284,6 +271,9 @@ export class ModJs {
       return this.$year;
     }
     return this["$" + name];
+  }
+  static use(module: Function, options) {
+    module.call(ModJs, options)
   }
 }
 

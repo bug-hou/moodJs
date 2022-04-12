@@ -21,7 +21,6 @@ describe("happy path", () => {
     });
     expect(date8.year()).toBe(2021);
     expect(date8.month()).toBe(8);
-    expect(date8.dayInMonth()).toBe(31);
   });
   it("month", () => {
     expect(date1.month()).toBe(date.getMonth() + 1);
