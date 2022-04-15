@@ -1,5 +1,6 @@
+import { isModJs } from "../utils";
 import { ModJs } from "./modJs";
-import { DateOptions } from "./type";
+import { DateOptions, TimeUntis } from "./type";
 
 class Diff {
   private signal: Boolean
@@ -13,27 +14,28 @@ class Diff {
       this.signal = false
     }
   }
-  format(m2: ModJs, str: string, config: object) {
-    const diff = this.time - m2.time();
+  format(m2: ModJs | DateOptions | Date | string | number, str: string, config: DiffConfig) {
+    if (!isModJs(m2)) {
+      m2 = new ModJs(m2 as any);
+    }
+    let diffTime = this.time - m2.time();
+
 
   }
-  config(config: DiffConfig) {
-    this.maxTime = new ModJs(config).time();
-    return this;
+  processConfig(config: DiffConfig) {
+    if (config.maxTimeStamp) {
+
+    }
   }
 }
 interface DiffConfig {
-  year?: number
-  month?: number
-  date?: number
-  hours?: number
-  minutes?: number
-  seconds?: number
-  milliseconds?: number
+  maxTimeStamp?: number | "infinity"
+  maxTimeUnits?: TimeUntis
+  isUseWeek?: boolean
+  isUseSeason?: boolean
 }
 
 function calculatTime(timeStamp: number) {
   const maxTimes = [1000, 60, 60, 24, 30, 12]
   const result = [];
-
 }

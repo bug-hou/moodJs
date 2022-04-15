@@ -30,3 +30,5 @@ export type ModJsLanguage = "en" | "zn"
 export interface languageModule {
   months: string[]
 }
+
+export type TimeUntis = "year" | "month" | "date" | "hours" | "minutes" | "seconds" | "milliseconds"

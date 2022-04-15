@@ -2,6 +2,7 @@ import {
   capitalize,
   formatRules,
   isDate,
+  isModJs,
   isNumber,
   isObject,
   isString,
@@ -43,7 +44,7 @@ export class ModJs {
     milliseconds?: number
   );
   constructor(
-    option?: number | Date | string | DateOptions,
+    option?: DateOptions | number | Date | string,
     monthIndex?: number,
     day?: number,
     hours?: number,

@@ -1,3 +1,5 @@
+import { ModJs } from "../core";
+
 export const isArray = (value): value is any[] => Array.isArray(value);
 
 export const isString = (value): value is string => typeof value === "string";
@@ -12,3 +14,6 @@ export const isObject = (value): value is object =>
 
 export const isUndefined = (value): value is undefined =>
   typeof value === "undefined";
+
+
+export const isModJs = (value): value is ModJs => value instanceof ModJs
