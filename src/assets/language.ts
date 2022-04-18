@@ -4,6 +4,17 @@ const en = {
   months: 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_')
 }
 
+const zn = {
+  name: "zn",
+  minutes: "分钟",
+  seconds: "秒",
+  hours: "小时",
+  date: "天",
+  month: "月份",
+  year: "年"
+}
+
 export default {
-  en
+  en,
+  zn
 }
