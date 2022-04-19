@@ -1,8 +1,13 @@
 const en = {
-  name: 'en',
-  weekdays: 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
-  months: 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_')
-}
+  name: "en",
+  weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split(
+    "_"
+  ),
+  months:
+    "January_February_March_April_May_June_July_August_September_October_November_December".split(
+      "_"
+    )
+};
 
 const zn = {
   name: "zn",
@@ -12,9 +17,9 @@ const zn = {
   date: "天",
   month: "月份",
   year: "年"
-}
+};
 
 export default {
   en,
   zn
-}
+};

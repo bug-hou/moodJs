@@ -1,7 +1,11 @@
 export const capitalize = (str: string) =>
   str.slice(0, 1).toUpperCase() + str.slice(1);
 
-export const numberSlice = (val: number | string, start?: number, end?: number) => {
+export const numberSlice = (
+  val: number | string,
+  start?: number,
+  end?: number
+) => {
   return String(val).slice(start, end);
 };
 

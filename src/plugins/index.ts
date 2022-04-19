@@ -1,2 +1,2 @@
 export * from "./days";
-export * from "./weeks"
+export * from "./weeks";

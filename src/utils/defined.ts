@@ -15,5 +15,4 @@ export const isObject = (value): value is object =>
 export const isUndefined = (value): value is undefined =>
   typeof value === "undefined";
 
-
-export const isModJs = (value): value is ModJs => value instanceof ModJs
+export const isModJs = (value): value is ModJs => value instanceof ModJs;

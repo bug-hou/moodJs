@@ -12,9 +12,15 @@ import {
   numberSlice,
   toString
 } from "../utils";
-import { DateMethod, DateOptions, languageModule, ModJsLanguage, ModJsOptions } from "./type";
+import {
+  DateMethod,
+  DateOptions,
+  languageModule,
+  ModJsLanguage,
+  ModJsOptions
+} from "./type";
 import { DateToDate, NowToDate, numberToDate } from "./date";
-import language from "../assets/language"
+import language from "../assets/language";
 
 export class ModJs {
   private $Date: Date;
@@ -27,8 +33,8 @@ export class ModJs {
   private $seconds!: number;
   private $milliseconds!: number;
   private $time!: number;
-  private language: ModJsLanguage = "en"
-  private $local: languageModule
+  private language: ModJsLanguage = "en";
+  private $local: languageModule;
   constructor();
   constructor(dateString: string);
   constructor(date: Date);
@@ -154,7 +160,7 @@ export class ModJs {
       M: toString($month + 1),
       MM: numberPadStart($month, 2, "0"),
       MMM: numberSlice($local["months"][$month - 1], 0, 3),
-      MMMM: $local['months'][$month - 1],
+      MMMM: $local["months"][$month - 1],
       D: toString($date),
       DD: numberPadStart($date, 2, "0"),
       w: toString($week),
@@ -274,7 +280,6 @@ export class ModJs {
     return this["$" + name];
   }
   static use(module: Function, options) {
-    module.call(ModJs, options)
+    module.call(ModJs, options);
   }
 }
-

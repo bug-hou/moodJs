@@ -25,10 +25,17 @@ export interface DateOptions {
 
 export type ModJsOptions = DateMethod[];
 
-export type ModJsLanguage = "en" | "zn"
+export type ModJsLanguage = "en" | "zn";
 
 export interface languageModule {
-  months: string[]
+  months: string[];
 }
 
-export type TimeUntis = "year" | "month" | "date" | "hours" | "minutes" | "seconds" | "milliseconds"
+export type TimeUntis =
+  | "year"
+  | "month"
+  | "date"
+  | "hours"
+  | "minutes"
+  | "seconds"
+  | "milliseconds";
