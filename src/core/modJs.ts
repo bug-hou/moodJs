@@ -2,7 +2,6 @@ import {
   capitalize,
   formatRules,
   isDate,
-  isModJs,
   isNumber,
   isObject,
   isString,

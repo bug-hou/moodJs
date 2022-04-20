@@ -25,6 +25,6 @@ describe("diff methods", () => {
       maxTimeStamp: "infinity"
     });
     // 还是要安装月份来进行计算
-    expect(d.format("2022-10-17 20:10:40")).toBe("6月份3天49分钟50秒前");
+    expect(d.format("2022-10-17 20:10:40")).toBe("6月3天49分钟50秒前");
   });
 });

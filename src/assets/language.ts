@@ -15,11 +15,12 @@ const zn = {
   seconds: "秒",
   hours: "小时",
   date: "天",
-  month: "月份",
+  month: "月",
   year: "年"
 };
-
-export default {
-  en,
+export const diffLanguage = {
   zn
+};
+export default {
+  en
 };

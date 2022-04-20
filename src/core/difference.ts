@@ -1,7 +1,7 @@
 import { isModJs, isString } from "../utils";
 import { ModJs } from "./modJs";
 import { DateOptions, TimeUntis } from "./type";
-import local from "../assets/language";
+import { diffLanguage as local } from "../assets/language";
 
 const TimeNames = ["seconds", "minutes", "hours", "date", "month", "year"];
 
@@ -17,7 +17,14 @@ export class Diff {
     if (!isModJs(m2)) {
       m2 = new ModJs(m2 as any);
     }
-    const names = TimeNames.reverse();
+    const names = [
+      "seconds",
+      "minutes",
+      "hours",
+      "date",
+      "month",
+      "year"
+    ].reverse();
     let diffTime = Math.abs(this.time - m2.time());
     if (this.maxTime < diffTime) {
       return m2.format("YYYY-MM-DD hh-mm-ss");
@@ -44,7 +51,7 @@ export class Diff {
     exact
     1小时13分钟前
   */
-  calculator(timeStamp: number) {
+  private calculator(timeStamp: number) {
     const date = { endValue: 0, endName: "milliseconds" };
     const names = TimeNames;
     const times = [1000, 60, 60, 24, 30, 12];
